@@ -8,5 +8,5 @@ type Author struct {
 	Id    uint      `json:"id" gorm:"primaryKey"`
 	Name  string    `json:"name"`
 	Dob   time.Time `json:"dob"`
-	Books []Book    `gorm:"many2many:book_authors;"`
+	Books []Book    `json:"-" gorm:"many2many:book_authors;"`
 }
