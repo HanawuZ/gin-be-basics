@@ -7,6 +7,7 @@ import (
 	"github.com/HanawuZ/gin-be-basics/interfaces"
 	"github.com/HanawuZ/gin-be-basics/models"
 	"github.com/gin-gonic/gin"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type UserController struct {
@@ -20,11 +21,14 @@ func (u *UserController) CreateUser(c *gin.Context) {
 		return
 	}
 
+	hashPassword, _ := bcrypt.GenerateFromPassword([]byte(user.Password), 14)
+	user.Password = string(hashPassword)
+
 	if err := u.UserUsecase.CreateUser(&user); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{
+	c.JSON(http.StatusCreated, gin.H{
 		"data":    user,
 		"message": "User created successfully",
 	})

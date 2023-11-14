@@ -1,30 +1,20 @@
 package configs
 
 import (
-	"github.com/HanawuZ/gin-be-basics/models"
-	"gorm.io/gorm"
-
-	// Import mysql
 	"fmt"
 
+	"github.com/HanawuZ/gin-be-basics/models"
 	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
 )
 
-var db *gorm.DB
+var database *gorm.DB
 
 func DB() *gorm.DB {
-	return db
+	return database
 }
 
-// type DBConfig struct {
-// 	user     string
-// 	password string
-// 	host     string
-// 	name     string
-// 	port     string
-// }
-
-func DatabaseConnection() (*gorm.DB, error) {
+func DatabaseConnection() {
 	dsn := "root:123456@tcp(localhost:3306)/springboot?parseTime=true"
 	dial := mysql.Open(dsn)
 	db, err := gorm.Open(dial)
@@ -33,6 +23,7 @@ func DatabaseConnection() (*gorm.DB, error) {
 		panic(err)
 	}
 
+	database = db
 	fmt.Println("Successfully connected to database....")
 	fmt.Println(db)
 
@@ -44,5 +35,5 @@ func DatabaseConnection() (*gorm.DB, error) {
 		panic(err)
 	}
 
-	return db, err
+	// return db, err
 }
