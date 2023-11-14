@@ -17,10 +17,9 @@ func NewUsersRepository(db *gorm.DB) interfaces.UserRepository {
 	}
 }
 
-func (u *UserRepository) CreateUser(req *models.User) (err error) {
-	if err := u.DB.Create(req).Error; err != nil {
+func (u *UserRepository) CreateUser(user *models.User) (err error) {
+	if err := u.DB.Create(user).Error; err != nil {
 		return err
 	}
-
 	return nil
 }

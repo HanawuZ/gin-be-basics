@@ -4,20 +4,13 @@ package controllers
 import (
 	"net/http"
 
+	"github.com/HanawuZ/gin-be-basics/interfaces"
 	"github.com/HanawuZ/gin-be-basics/models"
-	"github.com/HanawuZ/gin-be-basics/usecases"
 	"github.com/gin-gonic/gin"
 )
 
 type UserController struct {
-	UserUsecase usecases.UserUseCase
-}
-
-func NewUsersController(r *gin.Engine, UserUsecase usecases.UserUseCase) {
-	controllers := &UserController{
-		UserUsecase: UserUsecase,
-	}
-	r.POST("/", controllers.CreateUser)
+	UserUsecase interfaces.UserUsecase
 }
 
 func (u *UserController) CreateUser(c *gin.Context) {
@@ -31,6 +24,9 @@ func (u *UserController) CreateUser(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"data": user})
+	c.JSON(http.StatusOK, gin.H{
+		"data":    user,
+		"message": "User created successfully",
+	})
 
 }

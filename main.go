@@ -7,7 +7,8 @@ import (
 	"github.com/HanawuZ/gin-be-basics/configs"
 	"github.com/gin-gonic/gin"
 
-	"github.com/HanawuZ/gin-be-basics/repositories"
+	// "github.com/HanawuZ/gin-be-basics/repositories"
+	"github.com/HanawuZ/gin-be-basics/routes"
 )
 
 func main() {
@@ -16,30 +17,13 @@ func main() {
 		log.Fatal(err)
 	}
 
-	r := gin.Default()
+	router := gin.Default()
 
-	r.GET("/", func(c *gin.Context) {
+	router.GET("/", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
 			"message": "hello world!",
 		})
 	})
-
-	userRepo := &repositories.UserRepository{}
-	userRepo.DB = db
-
-	// userUseCase := usecases.NewUserUseCase(userRepo)
-	// controller := controllers.UserController{UserUsecase: userUseCase}
-
-	/*
-			coinRepo := repository.NewCoinRepository(DB)
-		coinUseCase := usecases.NewCoinUseCase(coinRepo)
-		coinController := controllers.NewCoinController(coinUseCase)
-
-		r.GET("coin", coinController.GetAllCoins)
-		r.GET("coin/:id", coinController.GetACoin)
-		r.POST("coin", coinController.CreateACoin)
-		r.PATCH("coin/:id", coinController.UpdateACoin)
-	*/
-
-	r.Run()
+	routes.Setup(router, db)
+	router.Run()
 }
