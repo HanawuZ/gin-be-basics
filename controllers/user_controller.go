@@ -18,7 +18,6 @@ func NewUsersController(r *gin.Engine, UserUsecase usecases.UserUseCase) {
 		UserUsecase: UserUsecase,
 	}
 	r.POST("/", controllers.CreateUser)
-
 }
 
 func (u *UserController) CreateUser(c *gin.Context) {
