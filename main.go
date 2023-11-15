@@ -1,10 +1,12 @@
 package main
 
 import (
-	"net/http"
+	// "net/http"
 
 	"github.com/HanawuZ/gin-be-basics/configs"
-	"github.com/gin-gonic/gin"
+	// "github.com/gin-gonic/gin"
+	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/logger"
 
 	// "github.com/HanawuZ/gin-be-basics/repositories"
 	"github.com/HanawuZ/gin-be-basics/routes"
@@ -18,13 +20,27 @@ func main() {
 	// 	log.Fatal(err)
 	// }
 
-	router := gin.Default()
 	db := configs.DB()
-	router.GET("/", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{
-			"message": "hello world!",
-		})
+	app := fiber.New()
+	app.Use(logger.New())
+	app.Use(logger.New(logger.Config{
+		Format: "[${ip}]:${port} ${status} - ${method} ${path}\n",
+	}))
+
+	app.Get("/", func(c *fiber.Ctx) error {
+		return c.SendString("Hello, World!")
 	})
+
+	// router := gin.Default()
+	// router.GET("/", func(c *gin.Context) {
+	// 	c.JSON(http.StatusOK, gin.H{
+	// 		"message": "hello world!",
+	// 	})
+	// })
+	var router = app
 	routes.Setup(router, db)
-	router.Run()
+	// router.Run()
+
+	app.Listen(":8080")
+
 }
