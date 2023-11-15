@@ -39,7 +39,7 @@ func DatabaseConnection() {
 		panic(err)
 	}
 
-	AddSampleData()
+	// AddSampleData()
 }
 
 // Add sample data to database

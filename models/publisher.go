@@ -16,5 +16,5 @@ type Publisher struct {
 	Address     string `json:"address"`
 	PhoneNumber string `json:"phoneNumber"`
 	Email       string `json:"email"`
-	Books       []Book `gorm:"foreignKey:PublisherId"`
+	Books       []Book `json:"-" gorm:"foreignKey:PublisherId"`
 }

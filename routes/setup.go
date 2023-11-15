@@ -8,4 +8,5 @@ import (
 func Setup(router *gin.Engine, db *gorm.DB) {
 	UserRoute(router, db)
 	AuthorRoutes(router, db)
+	BookRoutes(router, db)
 }
