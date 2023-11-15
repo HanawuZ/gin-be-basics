@@ -19,9 +19,7 @@ func (b *BookController) ListBook(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{
-		"data": books,
-	})
+	c.JSON(http.StatusOK, books)
 }
 
 func (b *BookController) AddBook(c *gin.Context) {
@@ -47,9 +45,7 @@ func (b *BookController) GetBookByISBN(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{
-		"data": book,
-	})
+	c.JSON(http.StatusOK, book)
 }
 
 func (b *BookController) UpdateBookByISBN(c *gin.Context) {

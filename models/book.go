@@ -25,7 +25,7 @@ type Book struct {
 	Price           float32   `json:"price"`
 
 	PublisherId *uint     `json:"publisherId"`
-	Publisher   Publisher `gorm:"references:Id"`
+	Publisher   Publisher `json:"publisher" gorm:"references:Id"`
 
-	Authors []Author `gorm:"many2many:book_authors;"`
+	Authors []Author `json:"authors" gorm:"many2many:book_authors;"`
 }
