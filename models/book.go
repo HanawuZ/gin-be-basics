@@ -29,3 +29,12 @@ type Book struct {
 
 	Authors []Author `json:"authors" gorm:"many2many:book_authors;"`
 }
+
+// // Add a GORM callback to handle cascading delete
+// func (b *Book) BeforeDelete(tx *gorm.DB) (err error) {
+// 	err = tx.Model(b).Association("Authors").Clear()
+// 	if err != nil {
+// 		return err
+// 	}
+// 	return nil
+// }

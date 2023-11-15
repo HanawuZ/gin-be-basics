@@ -77,8 +77,29 @@ func (bookRepo *BookRepository) UpdateBookByISBN(isbn string, book *models.Book)
 }
 
 func (bookRepo *BookRepository) DeleteBookByISBN(isbn string) (err error) {
-	if err := bookRepo.DB.Where("isbn = ?", isbn).Delete(&models.Book{}).Error; err != nil {
+	// Find the book by ISBN
+	var book models.Book
+
+	if err := bookRepo.DB.Where("isbn = ?", isbn).Preload("Authors").First(&book).Error; err != nil {
 		return err
 	}
+
+	// Remove association with authors
+	for _, author := range book.Authors {
+		if err := bookRepo.DB.Model(&book).Association("Authors").Delete(&author); err != nil {
+			return err
+		}
+	}
+
+	// Delete the book
+	if err := bookRepo.DB.Where("isbn = ?", isbn).Delete(&book).Error; err != nil {
+		return err
+	}
+
 	return nil
+	// bookRepo.DB.Model(&models.Book{}).Association("Authors").Delete(&models.Author{})
+	// if err := bookRepo.DB.Where("isbn = ?", isbn).Delete(&models.Book{}).Error; err != nil {
+	// 	return err
+	// }
+	// return nil
 }
