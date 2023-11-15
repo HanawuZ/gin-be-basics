@@ -2,10 +2,11 @@ package controllers
 
 // import gorm
 import (
+	"fmt"
 	"net/http"
 
+	"github.com/HanawuZ/gin-be-basics/dto"
 	"github.com/HanawuZ/gin-be-basics/interfaces"
-	"github.com/HanawuZ/gin-be-basics/models"
 	"github.com/gin-gonic/gin"
 )
 
@@ -23,18 +24,20 @@ func (b *BookController) ListBook(c *gin.Context) {
 }
 
 func (b *BookController) AddBook(c *gin.Context) {
-	var book models.Book
-	if err := c.ShouldBindJSON(&book); err != nil {
+	// var book models.Book
+	var bookReuqest dto.BookRequest
+	if err := c.ShouldBindJSON(&bookReuqest); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	err := b.BookUsecase.AddBook(&book)
+	fmt.Println(bookReuqest)
+	err := b.BookUsecase.AddBook(&bookReuqest)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 	c.JSON(http.StatusCreated, gin.H{
-		"data": book,
+		"message": "test",
 	})
 }
 

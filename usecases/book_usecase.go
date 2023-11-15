@@ -1,6 +1,7 @@
 package usecases
 
 import (
+	"github.com/HanawuZ/gin-be-basics/dto"
 	"github.com/HanawuZ/gin-be-basics/interfaces"
 	"github.com/HanawuZ/gin-be-basics/models"
 )
@@ -20,8 +21,8 @@ func (bookUsecase *BookUsecase) ListBooks() (books []models.Book, err error) {
 	return books, err
 }
 
-func (BookUsecase *BookUsecase) AddBook(book *models.Book) (err error) {
-	err = BookUsecase.BookRepository.AddBook(book)
+func (BookUsecase *BookUsecase) AddBook(bookReuqest *dto.BookRequest) (err error) {
+	err = BookUsecase.BookRepository.AddBook(bookReuqest)
 	return err
 }
 

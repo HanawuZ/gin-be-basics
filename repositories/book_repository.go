@@ -1,6 +1,9 @@
 package repositories
 
 import (
+	"time"
+
+	"github.com/HanawuZ/gin-be-basics/dto"
 	"github.com/HanawuZ/gin-be-basics/interfaces"
 	"github.com/HanawuZ/gin-be-basics/models"
 	"gorm.io/gorm"
@@ -25,7 +28,34 @@ func (bookRepo *BookRepository) ListBooks() (books []models.Book, err error) {
 	return books, nil
 }
 
-func (bookRepo *BookRepository) AddBook(book *models.Book) (err error) {
+func (bookRepo *BookRepository) AddBook(bookRequest *dto.BookRequest) (err error) {
+	// Get publisher
+	var publisher models.Publisher
+	if err := bookRepo.DB.Where("id = ?", bookRequest.PublisherId).First(&publisher).Error; err != nil {
+		return err
+	}
+
+	// Get authors
+	var authors []models.Author
+	if err := bookRepo.DB.Where("id IN ?", bookRequest.AuthorIds).Find(&authors).Error; err != nil {
+		return err
+	}
+
+	// Parse time
+	date, _ := time.Parse("2006-01-02", bookRequest.PublicationYear)
+
+	// Create book
+	book := models.Book{
+		Isbn:            bookRequest.Isbn,
+		Title:           bookRequest.Title,
+		Genre:           bookRequest.Genre,
+		CopiesAvailable: bookRequest.CopiesAvailable,
+		PublicationYear: date,
+		Price:           bookRequest.Price,
+		Authors:         authors,
+		Publisher:       publisher,
+	}
+
 	if err := bookRepo.DB.Create(&book).Error; err != nil {
 		return err
 	}
